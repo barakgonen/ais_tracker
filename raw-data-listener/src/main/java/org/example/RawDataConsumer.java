@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class RawDataConsumer {
-    @KafkaListener(topics = "raw-data-event", groupId = "your-group")
+    @KafkaListener(topics = "${topic}", groupId = "your-group")
     public void consume(InterfaceEvent event) {
         System.out.println("Received: " + event);
     }
