@@ -106,6 +106,6 @@ node_modules/
 # ------------------
 # Common project generated files
 # ------------------
-common/build/**
+common/build/**/
 common/build/generated-main-avro-java/
 common/build/generated/
