@@ -25,6 +25,10 @@ subprojects {
     sourceCompatibility = '17'
     targetCompatibility = '17'
 
+    repositories {
+        mavenCentral()
+    }
+
     dependencies {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
