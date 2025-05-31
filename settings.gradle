@@ -1,0 +1,3 @@
+rootProject.name = "AisSystem"
+include("raw-data-retriever")
+include("raw-data-listener")
