@@ -108,8 +108,13 @@ node_modules/
 # ------------------
 **/build/generated-main-avro-java/
 common/build/
+/*/build/
+**/build/
 
 raw-data-fetcher/build/*
 raw-data-fetcher/build/tmp/*
 raw-data-fetcher/build/tmp/compileJava/*
 raw-data-listener/build/tmp/compileJava/
+
+raw-data-listener/build/*
+raw-data-listener/build/tmp/*
