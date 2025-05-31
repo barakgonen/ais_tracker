@@ -4,11 +4,6 @@
   "name": "Heartbeat",
   "fields": [
     {
-      "name": "timestamp",
-      "type": "long",
-      "doc": "Unix epoch milliseconds"
-    },
-    {
       "name": "status",
       "type": {
         "type": "enum",

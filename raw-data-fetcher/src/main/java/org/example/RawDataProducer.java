@@ -2,8 +2,9 @@ package org.example;
 
 import com.ais.avro.schemas.ConnectionStatus;
 import com.ais.avro.schemas.Heartbeat;
-import com.ais.avro.schemas.MessageWrapper;
+import com.ais.avro.schemas.InterfaceEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,16 +22,15 @@ public class RawDataProducer {
     @Scheduled(fixedRate = 1000)
     public void sendMessage() {
         var timeStamp = Instant.now().toEpochMilli();
-        Heartbeat bg = Heartbeat.newBuilder()
+        Heartbeat heartbeat = Heartbeat.newBuilder()
                 .setStatus(ConnectionStatus.CONNECTED)
-                .setTimestamp(timeStamp)
                 .build();
-        var message = MessageWrapper.newBuilder()
-                .setTimestamp(timeStamp)
-                .setBg(bg)
+        var message = InterfaceEvent.newBuilder()
+                .setTimeStamp(timeStamp)
+                .setHeartBeat(heartbeat)
                 .build();
 
-        kafkaTemplate.send("vf", UUID.randomUUID().toString(), message);
+        kafkaTemplate.send(configProperties.getRawDataTopic(), UUID.randomUUID().toString(), message);
         System.out.println("Produced: " + message);
     }
 }
