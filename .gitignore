@@ -109,3 +109,7 @@ node_modules/
 common/build/**/
 common/build/generated-main-avro-java/
 common/build/generated/
+
+
+raw-data-listener/build/tmp/compileJava/previous-compilation-data.bin
+raw-data-retriever/build/tmp/compileJava/previous-compilation-data.bin
