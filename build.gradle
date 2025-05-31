@@ -30,7 +30,7 @@ subprojects {
     }
 
     dependencies {
-        implementation 'org.apache.avro:avro:1.11.3'
+        implementation 'org.apache.avro:avro:1.11.4'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 }
