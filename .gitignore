@@ -111,6 +111,10 @@ common/build/
 /*/build/
 **/build/
 
-raw-data-listener/build/resolvedMainClassName
-raw-data-listener/build/tmp/bootJar/MANIFEST.MF
-raw-data-listener/build/tmp/jar/MANIFEST.MF
+raw-data-fetcher/build/*
+raw-data-fetcher/build/tmp/*
+raw-data-fetcher/build/tmp/compileJava/*
+raw-data-listener/build/tmp/compileJava/
+
+raw-data-listener/build/*
+raw-data-listener/build/tmp/*
