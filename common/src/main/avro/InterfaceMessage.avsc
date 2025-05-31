@@ -1,0 +1,12 @@
+{
+  "namespace": "com.ais.avro.schemas",
+  "type": "record",
+  "name": "RawData",
+  "fields": [
+    {
+      "name": "data",
+      "type": "bytes",
+      "doc": "Raw bytes collected from TCP port"
+    }
+  ]
+}

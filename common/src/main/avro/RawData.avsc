@@ -1,0 +1,22 @@
+{
+  "namespace": "com.ais.avro.schemas",
+  "type": "record",
+  "name": "MessageWrapper",
+  "fields": [
+    {
+        "name": "timestamp",
+        "type": "long",
+        "doc": "Unix epoch milliseconds"
+    },
+    {
+      "name": "heartbeat",
+      "type": ["null", "com.ais.avro.schemas.Heartbeat"],
+      "default": null
+    },
+    {
+      "name": "rawData",
+      "type": ["null", "com.ais.avro.schemas.RawData"],
+      "default": null
+    }
+  ]
+}

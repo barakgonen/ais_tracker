@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.avro:avro:1.11.3'
+}
+
+avro {
+    createSetters = true
+}
+
+// Optional: expose generated code to IDE if not picked up automatically
+sourceSets.main.java.srcDirs += "$buildDir/generated-main-avro-java"

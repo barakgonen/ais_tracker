@@ -1,0 +1,21 @@
+{
+  "namespace": "com.ais.avro.schemas",
+  "type": "record",
+  "name": "Heartbeat",
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": "long",
+      "doc": "Unix epoch milliseconds"
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "ConnectionStatus",
+        "symbols": ["CONNECTED", "DISCONNECTED", "ERROR"]
+      },
+      "doc": "Current connection status"
+    }
+  ]
+}
