@@ -9,13 +9,25 @@ version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://packages.confluent.io/maven/'
+    }
 }
 
 dependencies {
     implementation project(':common')
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //kafka
     implementation 'org.springframework.kafka:spring-kafka'
+    //confluent
+    implementation("io.confluent:kafka-avro-serializer:7.9.1")
+    implementation("io.confluent:kafka-schema-registry-client:7.9.1")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

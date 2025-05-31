@@ -1,15 +1,15 @@
 {
   "namespace": "com.ais.avro.schemas",
   "type": "record",
-  "name": "MessageWrapper",
+  "name": "InterfaceEvent",
   "fields": [
     {
-        "name": "timestamp",
+        "name": "timeStamp",
         "type": "long",
         "doc": "Unix epoch milliseconds"
     },
     {
-      "name": "heartbeat",
+      "name": "heartBeat",
       "type": ["null", "com.ais.avro.schemas.Heartbeat"],
       "default": null
     },
