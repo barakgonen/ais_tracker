@@ -1,5 +1,5 @@
 rootProject.name = "ais_tracker"
-include("raw-data-retriever")
+include("raw-data-fetcher")
 include("raw-data-listener")
 include 'common'
 
