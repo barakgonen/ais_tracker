@@ -112,4 +112,5 @@ common/build/
 
 
 raw-data-listener/build/tmp/compileJava/previous-compilation-data.bin
-raw-data-retriever/build/tmp/compileJava/previous-compilation-data.bin
+raw-data-fetcher/build/tmp/compileJava/
+ raw-data-retriever/build/
