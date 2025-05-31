@@ -106,9 +106,8 @@ node_modules/
 # ------------------
 # Common project generated files
 # ------------------
-common/build/**/
-common/build/generated-main-avro-java/
-common/build/generated/
+**/build/generated-main-avro-java/
+
 
 
 raw-data-listener/build/tmp/compileJava/previous-compilation-data.bin
