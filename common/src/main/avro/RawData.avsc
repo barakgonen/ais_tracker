@@ -9,7 +9,7 @@
         "doc": "Unix epoch milliseconds"
     },
     {
-      "name": "heartbeat",
+      "name": "bg",
       "type": ["null", "com.ais.avro.schemas.Heartbeat"],
       "default": null
     },
