@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class RawDataProducer {
+public class StreamableEntitiesProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final KafkaProducerConfig configProperties;
 

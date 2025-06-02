@@ -1,4 +1,4 @@
-package org.example;
+package com.example;
 
 import com.ais.avro.schemas.InterfaceEvent;
 import lombok.AllArgsConstructor;
@@ -9,13 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @AllArgsConstructor
-public class RawDataConsumer {
-    private final StreamableEntitiesProducer producer;
-
-    @KafkaListener(topics = "${consumerFrom}", groupId = "your-group")
+public class EntitiesConsumer {
+    private final StreamableEntitiesWebSocketHandler streamableEntitiesWebSocketHandler;
+    @KafkaListener(topics = "${topic}", groupId = "your-group")
     public void consume(InterfaceEvent event) {
         if (event.getAisMessage() != null) {
-            producer.sendAisMessage(event.getAisMessage());
+            streamableEntitiesWebSocketHandler.sendMessage(event.getAisMessage());
         }
     }
 }

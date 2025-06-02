@@ -17,6 +17,9 @@ repositories {
 dependencies {
     implementation project(':common')
 
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
     //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
