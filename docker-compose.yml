@@ -204,3 +204,12 @@ services:
     depends_on:
       - broker
       - schema-registry
+  ui:
+    build:
+      context: ./ship_tracker_ui
+      dockerfile: Dockerfile
+    ports:
+      - "8086:80"
+    depends_on:
+      - broker
+      - schema-registry
