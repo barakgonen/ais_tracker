@@ -23,19 +23,23 @@ public class SensorDataConnector {
 
   @Scheduled(fixedRate = 1000)
   public void fetchData() {
-      try (Socket socket = new Socket(networkConfig.getHostName(), networkConfig.getPort());
-           BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+    try (Socket socket = new Socket(networkConfig.getHost(), networkConfig.getPort());
+        BufferedReader reader =
+            new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-          String line;
-          while ((line = reader.readLine()) != null) {
-              log.info("Got new data: {}", line);
-              RawData rawDataEvent = RawData.newBuilder()
-                      .setData(ByteBuffer.wrap(line.getBytes()))
-                      .build();
-              rawDataProducer.sendRawDataEvent(rawDataEvent);
-          }
-      } catch (Exception e) {
-          e.printStackTrace();
+      String line;
+      while ((line = reader.readLine()) != null) {
+        log.debug("Got new data: {}", line);
+        RawData rawDataEvent =
+            RawData.newBuilder().setData(ByteBuffer.wrap(line.getBytes())).build();
+        rawDataProducer.sendRawDataEvent(rawDataEvent);
       }
+    } catch (Exception e) {
+      log.error(
+          "Caught an exception during trying to connect to host: {}, on port: {}, exception: ",
+          networkConfig.getHost(),
+          networkConfig.getPort(),
+          e);
+    }
   }
 }

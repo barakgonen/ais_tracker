@@ -2,14 +2,15 @@ spring:
   application:
     name: sensor-connector
   kafka:
+    bootstrap-servers: broker:29092
     producer:
       properties:
-        schema.registry.url: http://localhost:8081
-        allow.auto.create.topics: false
-      bootstrap-servers: localhost:9092
+        allow.auto.create.topics: true
+        schema.registry.url: http://schema-registry:8081
       group-id: student_group
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 topic: new-raw-data-event
-hostName: 153.44.253.27
-port: 5631
+interface-configuration:
+  host: 153.44.253.27
+  port: 5631

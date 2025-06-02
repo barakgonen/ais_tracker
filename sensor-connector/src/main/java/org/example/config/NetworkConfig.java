@@ -1,16 +1,14 @@
 package org.example.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import lombok.Getter;
+import lombok.Data;
 
 @Component
-@Getter
+@Data
+@ConfigurationProperties(prefix = "interface-configuration")
 public class NetworkConfig {
-  @Value("${hostName}")
-  private String hostName;
-
-  @Value("${port}")
+  private String host;
   private Integer port;
 }
