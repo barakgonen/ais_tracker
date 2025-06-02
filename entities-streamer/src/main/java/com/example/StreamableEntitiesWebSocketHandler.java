@@ -69,17 +69,5 @@ public class StreamableEntitiesWebSocketHandler extends TextWebSocketHandler {
 
     public void sendMessage(AisMessage aisMessage) {
         rawMessages.add(aisMessage);
-        // Some logic
-//        String json = null;
-//        try {
-//            json = objectMapper.writeValueAsString(Map.of("mmsi", aisMessage.getMmsi(), "lat", aisMessage.getLatitude(), "lon", aisMessage.getLongitude()));
-//            for (WebSocketSession s : sessions) {
-//                if (s.isOpen()) {
-//                    s.sendMessage(new TextMessage(json));
-//                }
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 }
