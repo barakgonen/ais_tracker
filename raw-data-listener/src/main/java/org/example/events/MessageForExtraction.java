@@ -1,4 +1,4 @@
-package com.example.application.events;
+package org.example.events;
 
 import java.util.List;
 

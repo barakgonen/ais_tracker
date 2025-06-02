@@ -1,8 +1,12 @@
 package org.example;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
+import org.example.events.ExtractedAisMessage;
+import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +19,18 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class StreamableEntitiesProducer {
   private final KafkaTemplate<String, Object> kafkaTemplate;
   private final KafkaProducerConfig configProperties;
 
-  public void sendMessage() {
-
-    Heartbeat heartbeat = Heartbeat.newBuilder().setStatus(ConnectionStatus.CONNECTED).build();
-    var message = InterfaceEvent.newBuilder().setHeartBeat(heartbeat);
-    produceMessage(message);
-    System.out.println("Produced: " + message);
-  }
-
-  public void sendAisMessage(AisMessage aisMessage) {
-    var message = InterfaceEvent.newBuilder().setAisMessage(aisMessage);
-    produceMessage(message);
+  @EventListener
+  public void sendMessage(ExtractedAisMessage extractedAisMessage) {
+    getAisAvroMessage(extractedAisMessage.getAisMessage())
+            .ifPresent(aisMessage -> {
+              produceMessage(InterfaceEvent.newBuilder().setAisMessage(aisMessage));
+              log.info("Produces converted ais message, MMSI: {}", aisMessage.getMmsi());
+            });
   }
 
   private void produceMessage(InterfaceEvent.Builder eventBuilder) {
@@ -38,4 +39,22 @@ public class StreamableEntitiesProducer {
     kafkaTemplate.send(
         configProperties.getRawDataTopic(), UUID.randomUUID().toString(), eventBuilder.build());
   }
+
+  private Optional<AisMessage> getAisAvroMessage(dk.dma.ais.message.AisMessage aisMessage) {
+    if (aisMessage.getUserId() == 0) {
+      log.warn("Got a message with UserID = 0. rejecting");
+      return Optional.empty();
+    }
+
+    if (aisMessage.getValidPosition() == null || aisMessage.getValidPosition().getLatitude() == 0 || aisMessage.getValidPosition().getLongitude() == 0) {
+      log.warn("Got a message with invalid position. MMSI: {}, rejecting", aisMessage.getUserId());
+    }
+
+    return Optional.of(AisMessage.newBuilder()
+                    .setMmsi(aisMessage.getUserId())
+                    .setLatitude(aisMessage.getValidPosition().getLatitude())
+                    .setLongitude(aisMessage.getValidPosition().getLongitude())
+           .build());
+  }
+
 }

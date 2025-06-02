@@ -19,9 +19,6 @@ public class RawDataConsumer {
 
   @KafkaListener(topics = "${consumerFrom}", groupId = "your-groupa")
   public void consume(InterfaceEvent event) {
-    if (event.getAisMessage() != null) {
-      producer.sendAisMessage(event.getAisMessage());
-    }
     if (event.getRawData() != null) {
       publisher.publishEvent(new RawDataEvent(this, event.getRawData()));
       log.info("Just sent a RawDataEvent");

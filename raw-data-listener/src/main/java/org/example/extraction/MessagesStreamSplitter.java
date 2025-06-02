@@ -10,7 +10,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.ais.avro.schemas.RawData;
-import com.example.application.events.MessageForExtraction;
+import org.example.events.MessageForExtraction;
 import com.example.application.events.RawDataEvent;
 
 import lombok.AllArgsConstructor;

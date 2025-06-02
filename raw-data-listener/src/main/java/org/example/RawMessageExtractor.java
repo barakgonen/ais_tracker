@@ -1,18 +1,51 @@
 package org.example;
 
+import dk.dma.ais.message.AisMessage;
+import dk.dma.ais.reader.AisReaders;
+import lombok.AllArgsConstructor;
+import org.example.events.ExtractedAisMessage;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import com.example.application.events.MessageForExtraction;
+import org.example.events.MessageForExtraction;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.function.Consumer;
+
 @Service
 @Slf4j
+@AllArgsConstructor
 public class RawMessageExtractor {
+
+  private ApplicationEventPublisher applicationEventPublisher;
 
   @EventListener
   public void extractRawMessage(MessageForExtraction messageForExtraction) {
-    log.info("Got a message!!! in size: {}", messageForExtraction.getBytes().size());
+    // Got a self contained message, now need to see if we can build an AIS message from it
+    var receivedBytes = messageForExtraction.getBytes();
+    byte[] byteArray = new byte[receivedBytes.size() + 1];
+    byteArray[0] = "!".getBytes()[0];
+    for (int i = 0; i < receivedBytes.size(); i++) {
+      byteArray[i + 1] = receivedBytes.get(i);
+    }
+    InputStream inputStream = new ByteArrayInputStream(byteArray);
+    var aisMessage = AisReaders.createReaderFromInputStream(inputStream);
+    aisMessage.registerHandler(new Consumer<>() {
+        @Override
+        public void accept(AisMessage aisMessage) {
+            applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
+        }
+    });
+    aisMessage.start();
+      try {
+          aisMessage.join();
+      } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+      }
+
   }
 }

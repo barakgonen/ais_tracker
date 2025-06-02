@@ -12,9 +12,21 @@ repositories {
     maven {
         url 'https://packages.confluent.io/maven/'
     }
+
+    // TEMP
+    maven {
+        url 'https://repo1.maven.org/maven2/'
+    }
 }
 
 dependencies {
+
+    // TEMP!
+    // https://mvnrepository.com/artifact/dk.dma.ais.lib/ais-lib-communication
+    implementation("dk.dma.ais.lib:ais-lib-communication:2.8.5")
+    implementation("dk.dma.ais.lib:ais-lib-messages:2.8.5")
+
+
     implementation project(':common')
 
     //kafka
