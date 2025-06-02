@@ -46,9 +46,10 @@ public class StreamableEntitiesProducer {
     }
 
     if (aisMessage.getValidPosition() == null
-        || aisMessage.getValidPosition().getLatitude() == 0
-        || aisMessage.getValidPosition().getLongitude() == 0) {
+        || aisMessage.getValidPosition().getLatitude() == 0.0
+        || aisMessage.getValidPosition().getLongitude() == 0.0) {
       log.warn("Got a message with invalid position. MMSI: {}, rejecting", aisMessage.getUserId());
+      return Optional.empty();
     }
 
     return Optional.of(

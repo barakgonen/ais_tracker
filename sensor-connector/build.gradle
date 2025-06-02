@@ -12,18 +12,11 @@ repositories {
     maven {
         url 'https://packages.confluent.io/maven/'
     }
-    maven {
-        url 'https://repo1.maven.org/maven2/'
-    }
 }
 
 dependencies {
     implementation project(':common')
 
-    // https://mvnrepository.com/artifact/dk.dma.ais.lib/ais-lib-communication
-    implementation("dk.dma.ais.lib:ais-lib-communication:2.8.5")
-    implementation("dk.dma.ais.lib:ais-lib-messages:2.8.5")
-    
     //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
