@@ -111,9 +111,9 @@ common/build/
 /*/build/
 **/build/
 
-raw-data-fetcher/build/*
-raw-data-fetcher/build/tmp/*
-raw-data-fetcher/build/tmp/compileJava/*
+sensor-connector/build/*
+sensor-connector/build/tmp/*
+sensor-connector/build/tmp/compileJava/*
 raw-data-listener/build/tmp/compileJava/
 
 raw-data-listener/build/*
