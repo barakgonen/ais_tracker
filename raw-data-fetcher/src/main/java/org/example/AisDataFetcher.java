@@ -1,52 +1,61 @@
 package org.example;
 
-import com.ais.avro.schemas.AisMessage;
-import dk.dma.ais.reader.AisReader;
-import dk.dma.ais.reader.AisReaders;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.ByteBuffer;
+import java.util.Date;
+import java.util.function.Consumer;
+
+import org.example.config.NetworkConfig;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.ais.avro.schemas.RawData;
+
+import dk.dma.ais.binary.SixbitException;
+import dk.dma.ais.message.AisMessage;
+import dk.dma.ais.message.AisMessageException;
+import dk.dma.ais.packet.AisPacket;
+import dk.dma.ais.reader.AisReader;
+import dk.dma.ais.reader.AisReaders;
+import dk.dma.ais.sentence.CommentBlock;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class AisDataFetcher {
-    private final RawDataProducer rawDataProducer;
+  private final RawDataProducer rawDataProducer;
+  private final NetworkConfig networkConfig;
 
-    @Scheduled(fixedRate = 1000)
-    public void fetchAisData() throws InterruptedException {
-        AisReader reader = AisReaders.createReader("153.44.253.27", 5631);
-        reader.registerHandler(aisMessage -> {
-            extractMessageField(aisMessage).ifPresent(rawDataProducer::sendAisMessage);
+  @Scheduled(fixedRate = 1000)
+  public void fetchAisData() throws InterruptedException {
+    AisReader reader =
+        AisReaders.createReader(networkConfig.getHostName(), networkConfig.getPort());
+    reader.registerPacketHandler(
+        new Consumer<AisPacket>() {
+          @Override
+          public void accept(AisPacket packet) {
+            try {
+              AisMessage message = packet.getAisMessage();
+              byte[] rawData = packet.toByteArray();
+              RawData avroRawData = RawData.newBuilder().setData(ByteBuffer.wrap(rawData)).build();
+              rawDataProducer.sendRawDataEvent(avroRawData);
+              log.info("Produced raw data message, size: {}", rawData.length);
+              // Now avroBytes is the serialized Avro message
+              //                    System.out.println("Avro serialized data size: " +
+              // avroBytes.length + ", origin: " + rawData.length);
+            } catch (AisMessageException | SixbitException e) {
+              // Handle
+              return;
+            }
+            // Alternative returning null if no valid AIS message
+            AisMessage message = packet.tryGetAisMessage();
+
+            Date timestamp = packet.getTimestamp();
+            CommentBlock cb = packet.getVdm().getCommentBlock();
+          }
         });
-        reader.start();
-        reader.join();
-    }
-
-    private Optional<AisMessage> extractMessageField(dk.dma.ais.message.AisMessage aisMessage) {
-        if (aisMessage.getUserId() == 0) {
-            log.warn("Rejecting message with ID / mmsi which is 0");
-            return Optional.empty();
-        }
-
-        if (aisMessage.getValidPosition() == null || aisMessage.getValidPosition().getLongitude() == 0 || aisMessage.getValidPosition().getLatitude() == 0) {
-            log.warn("Rejecting message with id: {} because the position data is null", aisMessage.getUserId());
-            return Optional.empty();
-        }
-
-        int mmsi = aisMessage.getUserId();
-        double lat = aisMessage.getValidPosition().getLatitude();
-        double longitude = aisMessage.getValidPosition().getLongitude();
-
-        AisMessage aisMessage1 = AisMessage.newBuilder()
-                .setMmsi(mmsi)
-                .setLatitude(lat)
-                .setLongitude(longitude)
-                .build();
-
-        return Optional.of(aisMessage1);
-    }
+    reader.start();
+    reader.join();
+  }
 }

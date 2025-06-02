@@ -1,16 +1,16 @@
-package org.example;
+package org.example.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Component
 @Getter
-@Setter
-public class KafkaProducerConfig {
+public class NetworkConfig {
+  @Value("${hostName}")
+  private String hostName;
 
-  @Value("${topic}")
-  private String rawDataTopic;
+  @Value("${port}")
+  private Integer port;
 }
