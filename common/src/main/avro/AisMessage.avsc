@@ -1,0 +1,19 @@
+{
+  "namespace": "com.ais.avro.schemas",
+  "type": "record",
+  "name": "AisMessage",
+  "fields": [
+    {
+      "name": "mmsi",
+      "type": "long"
+    },
+    {
+      "name": "latitude",
+      "type": "double"
+    },
+    {
+      "name": "longitude",
+      "type": "double"
+    }
+  ]
+}

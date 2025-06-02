@@ -10,4 +10,4 @@ spring:
       group-id: student_group
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-topic: raw-data-event
+topic: new-raw-data-event

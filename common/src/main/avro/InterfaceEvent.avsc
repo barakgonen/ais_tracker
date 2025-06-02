@@ -17,6 +17,11 @@
       "name": "rawData",
       "type": ["null", "com.ais.avro.schemas.RawData"],
       "default": null
+    },
+    {
+      "name": "aisMessage",
+      "type": ["null", "com.ais.avro.schemas.AisMessage"],
+      "default": null
     }
   ]
 }
