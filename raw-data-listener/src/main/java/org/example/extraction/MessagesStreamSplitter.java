@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.example.events.MessageForExtraction;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.ais.avro.schemas.RawData;
-import org.example.events.MessageForExtraction;
 import com.example.application.events.RawDataEvent;
 
 import lombok.AllArgsConstructor;

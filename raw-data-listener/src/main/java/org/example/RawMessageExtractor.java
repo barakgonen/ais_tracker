@@ -1,20 +1,19 @@
 package org.example;
 
-import dk.dma.ais.message.AisMessage;
-import dk.dma.ais.reader.AisReaders;
-import lombok.AllArgsConstructor;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.function.Consumer;
+
 import org.example.events.ExtractedAisMessage;
+import org.example.events.MessageForExtraction;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import org.example.events.MessageForExtraction;
-
+import dk.dma.ais.message.AisMessage;
+import dk.dma.ais.reader.AisReaders;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.function.Consumer;
 
 @Service
 @Slf4j
@@ -34,18 +33,18 @@ public class RawMessageExtractor {
     }
     InputStream inputStream = new ByteArrayInputStream(byteArray);
     var aisMessage = AisReaders.createReaderFromInputStream(inputStream);
-    aisMessage.registerHandler(new Consumer<>() {
-        @Override
-        public void accept(AisMessage aisMessage) {
+    aisMessage.registerHandler(
+        new Consumer<>() {
+          @Override
+          public void accept(AisMessage aisMessage) {
             applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
-        }
-    });
+          }
+        });
     aisMessage.start();
-      try {
-          aisMessage.join();
-      } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-      }
-
+    try {
+      aisMessage.join();
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
