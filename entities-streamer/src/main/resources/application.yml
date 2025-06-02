@@ -2,13 +2,14 @@ spring:
   application:
     name: entities-streamer
   kafka:
+    bootstrap-servers: broker:29092
     consumer:
       group-id: student_group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
-        specific.avro.reader: true
         schema.registry.url: http://schema-registry:8081
+        specific.avro.reader: true
 
 topic: streamable-entities
 server:
