@@ -2,12 +2,11 @@ spring:
   application:
     name: raw-data-listener
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: broker:29092
     producer:
       properties:
-        schema.registry.url: http://localhost:8081
         allow.auto.create.topics: false
-      bootstrap-servers: localhost:9092
+        schema.registry.url: http://schema-registry:8081
       group-id: student_group
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
@@ -16,10 +15,8 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
+        schema.registry.url: http://schema-registry:8081
         specific.avro.reader: true
-        schema.registry.url: http://localhost:8081
 
 consumerFrom: new-raw-data-event
 produceTo: streamable-entities
-server:
-  port : 8070
