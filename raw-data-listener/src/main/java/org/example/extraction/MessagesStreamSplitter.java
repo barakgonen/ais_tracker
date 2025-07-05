@@ -43,8 +43,8 @@ public class MessagesStreamSplitter {
 
     // 1.1 find first delimiter
     while (!bytes.isEmpty()) {
+      var firstByte = bytes.poll();
       while (!isMessageFound) {
-        var firstByte = bytes.poll();
         if (firstByte != null) {
           // need to check if it's inside the delimiterBytes
           if (delimiterBytes[0] == firstByte) {
@@ -61,12 +61,15 @@ public class MessagesStreamSplitter {
               }
             }
             isMessageFound = true;
+          } else {
+            firstByte = bytes.poll();
           }
         }
       }
 
       // Now we have pointed
       List<Byte> byteList = new ArrayList<>();
+      byteList.add(firstByte);
       while (!bytes.isEmpty() && bytes.peek().byteValue() != delimiterBytes[0]) {
         byteList.add(bytes.poll());
       }

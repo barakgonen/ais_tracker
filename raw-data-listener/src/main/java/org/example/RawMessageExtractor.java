@@ -1,9 +1,11 @@
 package org.example;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.function.Consumer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.events.ExtractedAisMessage;
 import org.example.events.MessageForExtraction;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,18 +28,20 @@ public class RawMessageExtractor {
   public void extractRawMessage(MessageForExtraction messageForExtraction) {
     // Got a self contained message, now need to see if we can build an AIS message from it
     var receivedBytes = messageForExtraction.getBytes();
-    byte[] byteArray = new byte[receivedBytes.size() + 1];
-    byteArray[0] = "!".getBytes()[0];
+    byte[] byteArray = new byte[receivedBytes.size()];
     for (int i = 0; i < receivedBytes.size(); i++) {
-      byteArray[i + 1] = receivedBytes.get(i);
+      byteArray[i] = receivedBytes.get(i);
     }
     InputStream inputStream = new ByteArrayInputStream(byteArray);
+    byte b = byteArray[2];
+
+    int messageId = (b & 0xFC) >> 2;
     var aisMessage = AisReaders.createReaderFromInputStream(inputStream);
     aisMessage.registerHandler(
         new Consumer<>() {
           @Override
           public void accept(AisMessage aisMessage) {
-            applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
+              applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
           }
         });
     aisMessage.start();
