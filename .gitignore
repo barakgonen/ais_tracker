@@ -118,3 +118,6 @@ raw-data-listener/build/tmp/compileJava/
 
 raw-data-listener/build/*
 raw-data-listener/build/tmp/*
+
+/kafka-data/
+/local-data/
