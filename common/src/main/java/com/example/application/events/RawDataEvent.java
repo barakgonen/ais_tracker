@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public class RawDataEvent extends ApplicationEvent {
   private RawData rawData;
+  private String msgSource;
 
   public RawDataEvent(Object source, RawData rawData) {
     super(source);

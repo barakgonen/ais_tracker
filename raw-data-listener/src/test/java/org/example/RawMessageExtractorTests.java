@@ -28,7 +28,7 @@ public class RawMessageExtractorTests {
             48, 49, 101, 48, 70, 99, 55, 100, 81, 48, 86, 71, 70, 63, 109, 52, 68, 48, 48, 82, 67,
             44, 48, 42, 49, 69);
     List<Byte> bytes = hex.stream().map(Integer::byteValue).toList();
-    MessageForExtraction messageForExtraction = new MessageForExtraction(this, bytes);
+    MessageForExtraction messageForExtraction = new MessageForExtraction(this, bytes, "HAIFA");
 
     // == Act
     rawMessageExtractor.extractRawMessage(messageForExtraction);

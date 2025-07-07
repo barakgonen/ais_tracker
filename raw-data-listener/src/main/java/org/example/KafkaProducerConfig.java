@@ -13,6 +13,4 @@ public class KafkaProducerConfig {
 
   @Value("${produce-to}")
   private String produceToTopic;
-  @Value("${interface-name}")
-  private String interfaceName;
 }

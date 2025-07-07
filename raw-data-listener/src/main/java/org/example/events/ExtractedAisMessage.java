@@ -8,9 +8,11 @@ import lombok.Getter;
 @Getter
 public class ExtractedAisMessage extends ApplicationEvent {
   private final AisMessage aisMessage;
+  private final String msgSource;
 
-  public ExtractedAisMessage(Object source, AisMessage aisMessage) {
+  public ExtractedAisMessage(Object source, AisMessage aisMessage, String msgSource) {
     super(source);
     this.aisMessage = aisMessage;
+    this.msgSource = msgSource;
   }
 }

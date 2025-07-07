@@ -38,7 +38,7 @@ public class RawMessageExtractor {
         new Consumer<>() {
           @Override
           public void accept(AisMessage aisMessage) {
-            applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
+            applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage, messageForExtraction.getMessageSource()));
           }
         });
     aisMessage.start();

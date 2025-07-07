@@ -20,4 +20,3 @@ spring:
 
 consume-from: raw-data-events
 produce-to: streamable-entities
-interface-name: some-ais
