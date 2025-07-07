@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class KafkaProducerConfig {
-
-  @Value("${topic}")
+  @Value("${kafka.produce.to.topic}")
   private String rawDataTopic;
 }

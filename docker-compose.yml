@@ -193,18 +193,19 @@ services:
     depends_on:
       - broker
       - schema-registry
-#  nca-raw-data-listener:
-#    build:
-#      context: ./raw-data-listener
-#      dockerfile: Dockerfile
-#    environment:
-#      produce-to: streamable-entities
-#      interface_name: nca-ais
-#    ports:
-#      - "8069:8080"
-#    depends_on:
-#      - broker
-#      - schema-registry
+  nca-raw-data-listener:
+    build:
+      context: ./raw-data-listener
+      dockerfile: Dockerfile
+    environment:
+      interface_name: nca-ais
+      kafka_consume_from_topic: nca-raw-data-events
+      kafka_produce_to_topic: streamable-entities
+    ports:
+      - "8069:8080"
+    depends_on:
+      - broker
+      - schema-registry
 #  haifa-sensor-connector:
 #    build:
 #      context: ./sensor-connector
@@ -231,21 +232,23 @@ services:
 #    depends_on:
 #      - broker
 #      - schema-registry
-  entities-streamer:
-    build:
-      context: ./entities-streamer
-      dockerfile: Dockerfile
-    ports:
-      - "8072:8072"
-    depends_on:
-      - broker
-      - schema-registry
-  ui:
-    build:
-      context: ./ship_tracker_ui
-      dockerfile: Dockerfile
-    ports:
-      - "8086:80"
-    depends_on:
-      - broker
-      - schema-registry
+#  entities-streamer:
+#    build:
+#      context: ./entities-streamer
+#      dockerfile: Dockerfile
+#    environment:
+#      kafka_consume_from_topic: streamable-entities
+#    ports:
+#      - "8072:8072"
+#    depends_on:
+#      - broker
+#      - schema-registry
+#  ui:
+#    build:
+#      context: ./ship_tracker_ui
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8086:80"
+#    depends_on:
+#      - broker
+#      - schema-registry
