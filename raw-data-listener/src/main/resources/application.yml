@@ -18,5 +18,5 @@ spring:
         schema.registry.url: http://schema-registry:8081
         specific.avro.reader: true
 
-consumerFrom: raw-data-events
-produceTo: streamable-entities
+consume-from: raw-data-events
+produce-to: streamable-entities

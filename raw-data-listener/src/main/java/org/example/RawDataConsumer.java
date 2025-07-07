@@ -14,14 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 public class RawDataConsumer {
-  private final StreamableEntitiesProducer producer;
   private final ApplicationEventPublisher publisher;
 
-  @KafkaListener(topics = "${consumerFrom}", groupId = "your-groupa")
-  public void consume(InterfaceEvent event) {
+  @KafkaListener(topics = "${consume-from}", groupId = "your-groupa")
+  public void consume(String key, InterfaceEvent event) {
+    log.info("Got an event from kafka queue, key: {}", key);
     if (event.getRawData() != null) {
       publisher.publishEvent(new RawDataEvent(this, event.getRawData()));
-      log.info("Just sent a RawDataEvent");
     }
   }
 }
