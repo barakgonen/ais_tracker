@@ -1,11 +1,8 @@
 package org.example;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.function.Consumer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.events.ExtractedAisMessage;
 import org.example.events.MessageForExtraction;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,7 +38,7 @@ public class RawMessageExtractor {
         new Consumer<>() {
           @Override
           public void accept(AisMessage aisMessage) {
-              applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
+            applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage));
           }
         });
     aisMessage.start();

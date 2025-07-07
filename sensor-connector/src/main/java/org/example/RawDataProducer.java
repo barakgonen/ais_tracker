@@ -1,7 +1,6 @@
 package org.example;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ public class RawDataProducer {
   }
 
   private void produceMessage(String key, InterfaceEvent value) {
-    kafkaTemplate.send(
-        configProperties.getRawDataTopic(), key, value);
+    kafkaTemplate.send(configProperties.getRawDataTopic(), key, value);
   }
 }

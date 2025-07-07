@@ -2,7 +2,6 @@ package org.example.events;
 
 import java.util.List;
 
-import lombok.NoArgsConstructor;
 import org.springframework.context.ApplicationEvent;
 
 import lombok.Getter;
