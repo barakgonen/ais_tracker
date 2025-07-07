@@ -10,7 +10,9 @@ spring:
       properties:
         schema.registry.url: http://schema-registry:8081
         specific.avro.reader: true
-
-topic: streamable-entities
+kafka:
+  consume:
+    from:
+      topic: streamable-entities
 server:
   port : 8072

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.extraction;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class KafkaProducerConfig {
 
-  @Value("${produceTo}")
-  private String rawDataTopic;
+  @Value("${kafka.produce.to.topic}")
+  private String produceToTopic;
 }

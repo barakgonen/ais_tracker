@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EntitiesConsumer {
   private final StreamableEntitiesWebSocketHandler streamableEntitiesWebSocketHandler;
 
-  @KafkaListener(topics = "${topic}", groupId = "your-group")
+  @KafkaListener(topics = "${kafka.consume.from.topic}", groupId = "my-entities-streamer-group")
   public void consume(InterfaceEvent event) {
     if (event.getAisMessage() != null) {
       streamableEntitiesWebSocketHandler.sendMessage(event.getAisMessage());

@@ -17,6 +17,13 @@ spring:
       properties:
         schema.registry.url: http://schema-registry:8081
         specific.avro.reader: true
-
-consumerFrom: new-raw-data-event
-produceTo: streamable-entities
+kafka:
+  consume:
+    from:
+      topic: nca-raw-data-events
+  produce:
+    to:
+      topic: streamable-entities
+interface:
+  name:
+    ais1

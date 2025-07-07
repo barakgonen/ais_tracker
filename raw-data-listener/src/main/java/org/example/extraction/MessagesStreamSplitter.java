@@ -32,10 +32,10 @@ public class MessagesStreamSplitter {
     handleRawDataMessage(rawDataEvent.getRawData());
 
     // starting to split messages
-    splitMessages();
+    splitMessages(rawDataEvent.getMsgSource());
   }
 
-  private void splitMessages() {
+  private void splitMessages(String receivedFrom) {
     log.info("Size of bytes: {}", bytes.size());
     // Stage 1: lets split the message
     var delimiterBytes = DELIMITER.getBytes();
@@ -74,7 +74,7 @@ public class MessagesStreamSplitter {
         byteList.add(bytes.poll());
       }
 
-      publisher.publishEvent(new MessageForExtraction(this, byteList));
+      publisher.publishEvent(new MessageForExtraction(this, byteList, receivedFrom));
       // Getting ready to next message
       isMessageFound = false;
     }

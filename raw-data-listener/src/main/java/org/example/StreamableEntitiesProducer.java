@@ -2,9 +2,9 @@ package org.example;
 
 import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.example.events.ExtractedAisMessage;
+import org.example.extraction.KafkaProducerConfig;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -24,19 +24,22 @@ public class StreamableEntitiesProducer {
 
   @EventListener
   public void sendMessage(ExtractedAisMessage extractedAisMessage) {
+    log.info("Got extracted ais message: {}", extractedAisMessage);
     getAisAvroMessage(extractedAisMessage.getAisMessage())
-        .ifPresent(
+        .ifPresentOrElse(
             aisMessage -> {
-              produceMessage(InterfaceEvent.newBuilder().setAisMessage(aisMessage));
-              log.info("Produces converted ais message, MMSI: {}", aisMessage.getMmsi());
-            });
+              produceMessage(
+                  InterfaceEvent.newBuilder().setAisMessage(aisMessage),
+                  extractedAisMessage.getMsgSource());
+              log.info("Produced converted ais message, MMSI: {}", aisMessage.getMmsi());
+            },
+            () -> log.warn("Couldn't transform extractedAisMessage to Avro message"));
   }
 
-  private void produceMessage(InterfaceEvent.Builder eventBuilder) {
+  private void produceMessage(InterfaceEvent.Builder eventBuilder, String messageSource) {
     var timeStamp = Instant.now().toEpochMilli();
     eventBuilder.setTimeStamp(timeStamp);
-    kafkaTemplate.send(
-        configProperties.getRawDataTopic(), UUID.randomUUID().toString(), eventBuilder.build());
+    kafkaTemplate.send(configProperties.getProduceToTopic(), messageSource, eventBuilder.build());
   }
 
   private Optional<AisMessage> getAisAvroMessage(dk.dma.ais.message.AisMessage aisMessage) {

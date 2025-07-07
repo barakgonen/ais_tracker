@@ -9,9 +9,11 @@ import lombok.Getter;
 @Getter
 public class RawDataEvent extends ApplicationEvent {
   private RawData rawData;
+  private String msgSource;
 
-  public RawDataEvent(Object source, RawData rawData) {
+  public RawDataEvent(Object source, RawData rawData, String origin) {
     super(source);
     this.rawData = rawData;
+    this.msgSource = origin;
   }
 }
