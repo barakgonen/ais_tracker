@@ -2,6 +2,7 @@ spring:
   application:
     name: raw-data-listener
   kafka:
+    produce-entities-to: streamable-entities
     bootstrap-servers: broker:29092
     producer:
       properties:
@@ -17,6 +18,5 @@ spring:
       properties:
         schema.registry.url: http://schema-registry:8081
         specific.avro.reader: true
-
-consume-from: raw-data-events
-produce-to: streamable-entities
+kafka:
+  consume-from: nca-raw-data-event

@@ -23,6 +23,7 @@ public class RawMessageExtractor {
 
   @EventListener
   public void extractRawMessage(MessageForExtraction messageForExtraction) {
+    log.info("Got an event: {}", messageForExtraction);
     // Got a self contained message, now need to see if we can build an AIS message from it
     var receivedBytes = messageForExtraction.getBytes();
     byte[] byteArray = new byte[receivedBytes.size()];
@@ -38,7 +39,8 @@ public class RawMessageExtractor {
         new Consumer<>() {
           @Override
           public void accept(AisMessage aisMessage) {
-            applicationEventPublisher.publishEvent(new ExtractedAisMessage(this, aisMessage, messageForExtraction.getMessageSource()));
+            applicationEventPublisher.publishEvent(
+                new ExtractedAisMessage(this, aisMessage, messageForExtraction.getMessageSource()));
           }
         });
     aisMessage.start();
