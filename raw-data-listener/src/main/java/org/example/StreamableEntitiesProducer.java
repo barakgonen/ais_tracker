@@ -25,18 +25,18 @@ public class StreamableEntitiesProducer {
   @EventListener
   public void sendMessage(ExtractedAisMessage extractedAisMessage) {
     getAisAvroMessage(extractedAisMessage.getAisMessage())
-        .ifPresent(
+        .ifPresentOrElse(
             aisMessage -> {
               produceMessage(InterfaceEvent.newBuilder().setAisMessage(aisMessage));
               log.info("Produces converted ais message, MMSI: {}", aisMessage.getMmsi());
-            });
+            }, () -> log.warn("Couldn't transform extractedAisMessage to Avro message"));
   }
 
   private void produceMessage(InterfaceEvent.Builder eventBuilder) {
     var timeStamp = Instant.now().toEpochMilli();
     eventBuilder.setTimeStamp(timeStamp);
     kafkaTemplate.send(
-        configProperties.getRawDataTopic(), UUID.randomUUID().toString(), eventBuilder.build());
+        configProperties.getProduceToTopic(), configProperties.getInterfaceName(), eventBuilder.build());
   }
 
   private Optional<AisMessage> getAisAvroMessage(dk.dma.ais.message.AisMessage aisMessage) {

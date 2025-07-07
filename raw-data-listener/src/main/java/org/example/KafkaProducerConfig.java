@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class KafkaProducerConfig {
 
-  @Value("${produceTo}")
-  private String rawDataTopic;
+  @Value("${produce-to}")
+  private String produceToTopic;
+  @Value("${interface-name}")
+  private String interfaceName;
 }

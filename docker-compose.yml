@@ -197,6 +197,7 @@ services:
       dockerfile: Dockerfile
     environment:
       produce-to: streamable-entities
+      interface_name: nca-ais
     ports:
       - "8069:8080"
     depends_on:
@@ -222,6 +223,7 @@ services:
     environment:
       consume-from: haifa-raw-data-events
       produce-to: streamable-entities
+      interface_name: haifa-ais
     ports:
       - "8071:8080"
     depends_on:
