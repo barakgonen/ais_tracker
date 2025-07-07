@@ -16,15 +16,15 @@ public class RawDataProducer {
   private final KafkaTemplate<String, Object> kafkaTemplate;
   private final KafkaProducerConfig configProperties;
 
-  public void sendRawDataEvent(RawData rawData) {
-    var message = InterfaceEvent.newBuilder().setRawData(rawData);
-    produceMessage(message);
+  public void sendRawDataEvent(String key, RawData data) {
+    var value = InterfaceEvent.newBuilder().setRawData(data);
+    var timeStamp = Instant.now().toEpochMilli();
+    value.setTimeStamp(timeStamp);
+    produceMessage(key, value.build());
   }
 
-  private void produceMessage(InterfaceEvent.Builder eventBuilder) {
-    var timeStamp = Instant.now().toEpochMilli();
-    eventBuilder.setTimeStamp(timeStamp);
+  private void produceMessage(String key, InterfaceEvent value) {
     kafkaTemplate.send(
-        configProperties.getRawDataTopic(), UUID.randomUUID().toString(), eventBuilder.build());
+        configProperties.getRawDataTopic(), key, value);
   }
 }
