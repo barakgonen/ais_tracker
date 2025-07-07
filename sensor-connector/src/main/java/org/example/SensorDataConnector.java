@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
+import org.apache.kafka.common.KafkaException;
 import org.example.config.NetworkConfig;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class SensorDataConnector {
             RawData.newBuilder().setData(ByteBuffer.wrap(line.getBytes())).build();
         rawDataProducer.sendRawDataEvent(networkConfig.getHost(), rawDataEvent);
       }
+    } catch (KafkaException kafkaException) {
+      log.error("Caught kafka exception: ", kafkaException);
     } catch (Exception e) {
       log.error(
           "Caught an exception during trying to connect to host: {}, on port: {}, exception: ",
